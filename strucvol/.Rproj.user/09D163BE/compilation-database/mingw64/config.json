@@ -1,0 +1,28 @@
+{
+    "args": [
+        "-std=gnu++11",
+        "-IC:/PROGRA~1/R/R-42~1.2/include",
+        "-DNDEBUG",
+        "-IC:/Users/Omistaja/AppData/Local/R/win-library/4.2/Rcpp/include",
+        "-DEIGEN_DONT_VECTORIZE",
+        "-nostdinc",
+        "-U_MSC_VER",
+        "-D__GNUC__=10",
+        "-D__GNUC_MINOR__=3",
+        "-D__GNUC_PATCHLEVEL__=0",
+        "-IC:/RBuildTools/4.2/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include/c++",
+        "-IC:/RBuildTools/4.2/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include/c++/x86_64-w64-mingw32.static.posix",
+        "-IC:/RBuildTools/4.2/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include/c++/backward",
+        "-IC:/RBuildTools/4.2/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include",
+        "-IC:/RBuildTools/4.2/x86_64-w64-mingw32.static.posix/include",
+        "-IC:/RBuildTools/4.2/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include-fixed",
+        "-include",
+        "C:/Users/Omistaja/Documents/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/.Rproj.user/09D163BE/compilation-database/mingw64/cpp-definitions.h"
+    ],
+    "pch": "Rcpp",
+    "is_cpp": true,
+    "hash": "1684742065",
+    "compiler": "17486434899767519736",
+    "rversion": "4.2.2",
+    "dbversion": 4
+}

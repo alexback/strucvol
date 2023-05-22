@@ -1,0 +1,26 @@
+{
+    "id": "86246561",
+    "path": "~/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/R/estimation.R",
+    "project_path": "R/estimation.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1684743985204.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "37,80",
+        "scrollLine": "23"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1684759955,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1684759955711,
+    "read_only": false,
+    "read_only_alternatives": []
+}

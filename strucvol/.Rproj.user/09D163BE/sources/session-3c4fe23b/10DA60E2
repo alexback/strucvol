@@ -1,0 +1,26 @@
+{
+    "id": "10DA60E2",
+    "path": "~/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/R/kalman.R",
+    "project_path": "R/kalman.R",
+    "type": "r_source",
+    "hash": "1166837990",
+    "contents": "",
+    "dirty": false,
+    "created": 1684743939536.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "68,18",
+        "scrollLine": "204"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1684756371,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1684756371036,
+    "read_only": false,
+    "read_only_alternatives": []
+}
