@@ -3,7 +3,7 @@
     "path": "~/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/R/testing.R",
     "project_path": "R/testing.R",
     "type": "r_source",
-    "hash": "1231647155",
+    "hash": "2445463109",
     "contents": "",
     "dirty": false,
     "created": 1684743977983.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "220,2",
-        "scrollLine": "197"
+        "cursorPosition": "216,78",
+        "scrollLine": "201"
     },
     "folds": "",
-    "lastKnownWriteTime": 1684755312,
+    "lastKnownWriteTime": 1684768334,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1684755312932,
+    "last_content_update": 1684768334289,
     "read_only": false,
     "read_only_alternatives": []
 }

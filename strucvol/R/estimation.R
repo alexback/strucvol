@@ -1,7 +1,9 @@
+#'@title Fit a standard stochastic volatility model.
 #'@param y a numeric vector or time series containing log returns.
 #'@param start starting parameters for the optimization. 
 #'@param N number of importance samples to draw for the Monte Carlo ll evaluation.
-#'#@return A list containing the output from the solver (model) and the outputs from 
+#'@import Rsolnp 
+#'@return A list containing the output from the solver (model) and the outputs from 
 #'the Kalman filter and monte carlo evaluation routine (fit).
 #'@export
 fitsv <- function(y, N = 5, start = c(0.95, 0.3)){
@@ -15,6 +17,8 @@ fitsv <- function(y, N = 5, start = c(0.95, 0.3)){
   return(list(model = mlmodel, fit = fit))
   
 }
+
+#'@title Fit a structural stochastic volatility model.
 #'@param y a numeric vector or time series containing log returns.
 #'@param x an explanatory variable, presumably the log of a leverage multiplier.
 #'@param N number of importance samples to draw for the Monte Carlo ll evaluation.
@@ -34,10 +38,12 @@ fitssv <- function(y, x, N = 5, start = c(0.95, 0.3)){
   return(list(model = smlmodel, fit = fit))
 }
 
+#'@title Fit a bivariate structural stochastic volatility model.
 #'@param y a bivariate numeric or time series containing log returns. The first column
 #'should contain the "structural" series, while the second corresponds to the market.
 #'@param x an explanatory variable, presumably the log of a leverage multiplier.
 #'@param start starting parameters for the optimization.
+#'@import FKF
 #'@return A list containing the output from the solver ("model") and the outputs from 
 #'the Kalman filter ("fit").
 #'@export

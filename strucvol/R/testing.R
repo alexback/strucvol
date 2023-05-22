@@ -45,8 +45,10 @@ svol2lgarch <- function(sigma0, beta1, sigma1){
   
 }
 
+#'@title Test for a leverage effect in the data.
 #'@param data The data to be tested.
 #'@param model The null model.
+#'@import Rcpp
 #'@return A test statistic with an asymptotic chi^2(1) distribution under the null model.
 #'@export
 llevtest <- function(data, model)
@@ -127,6 +129,7 @@ llevtest <- function(data, model)
 
 
 ################################################################################
+#'@title Test for misspecification in the form of an excluded leverage multiplier.
 #'@param data The data to be tested.
 #'@param model The null model.
 #'@return A test statistic with an asymptotic chi^2(1) distribution under the null model.
@@ -211,7 +214,7 @@ levmulttest <- function(data, lmt, model)
   
 }
 ################################################################################
-
+#'@title Likelihood ratio test for two competing stochastic volatility models.
 #'@param model0 The null model
 #'@param model1 The alternative model
 #'@return The likelihood ratio test statistic, here presumably asymptotically
