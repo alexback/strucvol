@@ -2,4 +2,5 @@
 #'
 #'
 #' @source \url{https://cran.r-project.org/web/packages/stochvol/index.html}
-df.rda
+#' @export
+"df.rda"

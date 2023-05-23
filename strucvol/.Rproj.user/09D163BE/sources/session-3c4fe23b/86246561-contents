@@ -11,10 +11,11 @@ fitsv <- function(y, N = 5, start = c(0.95, 0.3)){
                    yt = y, Ht = rep(pi^2 / 2, length(y)), fit = T)
   smlmodel <- solnp(pars = mlmodel$pars, fun = skloglik, LB = c(0,0), UB = c(1,1),
                     yt = y, fit = T, control = list(tol = 1e-8))
+  errors <- sqrt(diag(solve(smlmodel$hessian)))
   
   fit <- skloglik(param = smlmodel$pars, yt = y, N = N, fit = F)
   
-  return(list(model = mlmodel, fit = fit))
+  return(list(model = mlmodel, fit = fit, errors = errors))
   
 }
 
@@ -33,9 +34,11 @@ fitssv <- function(y, x, N = 5, start = c(0.95, 0.3)){
   smlmodel <- solnp(pars = mlmodel$pars, fun = sskloglik, LB = c(0.001,0.001), UB = c(0.99,0.99),
                     yt = y, xt = x, N = N, fit = T, control = list(tol = 1e-8))
   
+  errors <- sqrt(diag(solve(smlmodel$hessian)))
+  
   fit <- sskloglik(param = smlmodel$pars, yt = y, xt = x, N = N, fit = F)
   
-  return(list(model = smlmodel, fit = fit))
+  return(list(model = smlmodel, fit = fit, errors = errors))
 }
 
 #'@title Fit a bivariate structural stochastic volatility model.
@@ -52,8 +55,9 @@ fitmssv <- function(y, x, start = c(0.95, 0.95, 0.3, 0.3, 0.02)){
  model <- solnp(pars = start, fun = mssvloglik, LB = c(0,0,0,0,0), UB = c(1,1,1,1,1),
         yt = y, xt = x, fit = T)  
   
- fit <- mssvloglik(param <- model$pars, yt = y, x = x, fit = F)
+ errors <- mssverrors(model = model, y = y, x = x)
+ fit <- mssvloglik(param = model$pars, yt = y, x = x, fit = F)
  
- return(list(model = model, fit = fit))
+ return(list(model = model, fit = fit, errors = errors))
  
 }
