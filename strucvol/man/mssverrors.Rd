@@ -7,12 +7,12 @@
 mssverrors(model, y, x)
 }
 \arguments{
+\item{model}{Output "model" from function "fitmssv".}
+
 \item{y}{The bivariate time series of log returns that the model has been fitted to.}
 
 \item{x}{The explanatory variable for the model of the first column in y, presumably 
 a log leverage multiplier.}
-
-\item{svoloutput}{Output from function "fitmssv".}
 }
 \description{
 Calculate numerical "sandwich" variance-covariance errors 

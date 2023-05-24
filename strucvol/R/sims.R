@@ -62,18 +62,38 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
     lm <- rep(0, len-1)
     
     re <- rep(0, len)
-    re[1] <- ra[1]
+    re[1] <- ra[1] * pnorm(d1[1]) * A[1] / E[1] 
     
     for (j in 2:len){
-    lm[j -1] <- pnorm(d1[j -1]) * A[j - 1] / E[j - 1]
-    re[j] <- lm[j -1] * ra[j]
+    lm[j -1] <- pnorm(d1[j - 1]) * A[j - 1] / E[j - 1]
+    re[j] <- lm[j - 1] * ra[j]
     
     E[j] <- E[j - 1] * exp(re[j])
     }
     
     EK = E / K
-    return(list(retseries = cbind(ra, re, rm), lm = lm, E = E, A = A, EK = EK))
+    return(list(retseries = cbind(ra, re, rm), h = cbind(h_1, h_2), lm = lm, E = E, A = A, EK = EK, AK = AK))
     
   
 }
+
+simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9),
+                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, default = 0.8){
+  
+  
+  
+  sims <- replicate(n = N,
+                    min(simstrucsystem(len = len, pars = pars, Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv)$EK))
+
+  
+  hist(sims, main = "Distribution of the minimum leverage ratio during the period", xlab = "Leverage ratio", col = 5,      # Color
+       density = 20,
+       angle = 20
+       ) 
+  abline(v = default, col ="red")
+  legend("topleft", legend = "Default", pch = "|", col = "red")
+ return(sims)
+  
+} 
+
 
