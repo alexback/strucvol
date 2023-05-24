@@ -1,6 +1,15 @@
 #'@title simstrucsystem
 #'@description Simulate a bivariate structural volatility model.
 #'@importFrom MASS mvrnorm 
+#'@param len Integer, the length of the simulated time period.
+#'@param pars A vector with the parameter values of the structural multivariate stochastic volatility model.
+#'@param Ain Numeric, initial asset value.
+#'@param Ein Numeric, initial equity value.
+#'@param K Numeric, debt value over the time period.
+#'@param r Numeric, the risk-free rate of interest
+#'@param uv Numeric, the daily unconditional variance of the assets over the period.
+#'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
+#'@return A list containing relevant simulated quantities.
 #'@export
 
 simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9),
@@ -77,21 +86,40 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
   
 }
 
+#'@title simdevent
+#'@description Simulate the minimum leverage ratio during some period given inputs.
+#'@importFrom MASS mvrnorm
+#'@param N Integer, the number of time series to use for the simulation. 
+#'@param len Integer, the length of the simulated time period.
+#'@param pars A vector with the parameter values of the structural multivariate stochastic volatility model.
+#'@param Ain Numeric, initial asset value.
+#'@param Ein Numeric, initial equity value.
+#'@param K Numeric, debt value over the time period.
+#'@param r Numeric, the risk-free rate of interest
+#'@param uv Numeric, the daily unconditional variance of the assets over the period.
+#'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
+#'@param default Numeric, specifies a leverage ratio that implies default. Used to draw vertical abline in the histogram.
+#'@param plot Boolean, should a plot be created (T) or not (F)?
+#'@return Plots the histogram with a vertical abline for the default and returns the simulated minimum leverage ratios.  
+#'@export
+
 simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9),
-                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, default = 0.8){
+                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, default = 0.8, plot = T){
   
   
   
   sims <- replicate(n = N,
                     min(simstrucsystem(len = len, pars = pars, Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv)$EK))
 
-  
-  hist(sims, main = "Distribution of the minimum leverage ratio during the period", xlab = "Leverage ratio", col = 5,      # Color
+  if (plot == T){
+  hist(sims, main = "Distribution of the minimum leverage ratio during the period", xlab = "Leverage ratio", col = 5,
        density = 20,
-       angle = 20
-       ) 
+       angle = 20) 
   abline(v = default, col ="red")
   legend("topleft", legend = "Default", pch = "|", col = "red")
+  }
+  
+  
  return(sims)
   
 } 
