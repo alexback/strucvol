@@ -15,7 +15,7 @@ fitsv <- function(y, N = 5, start = c(0.95, 0.3)){
   
   fit <- skloglik(param = smlmodel$pars, yt = y, N = N, fit = F)
   
-  return(list(model = mlmodel, fit = fit, errors = errors))
+  return(list(model = smlmodel, fit = fit, errors = errors))
   
 }
 
@@ -31,7 +31,7 @@ fitssv <- function(y, x, N = 5, start = c(0.95, 0.3)){
   mlmodel <- solnp(pars = start, fun = ssvloglik, LB = c(0,0), UB = c(1,1),
                    yt = y, xt = x, Ht = rep(pi^2 / 2, length(y)), fit = T)
   
-  smlmodel <- solnp(pars = mlmodel$pars, fun = sskloglik, LB = c(0.001,0.001), UB = c(0.99,0.99),
+  smlmodel <- solnp(pars = mlmodel$pars, fun = sskloglik, LB = c(0,0), UB = c(1,1),
                     yt = y, xt = x, N = N, fit = T, control = list(tol = 1e-8))
   
   errors <- sqrt(diag(solve(smlmodel$hessian)))

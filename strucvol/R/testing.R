@@ -223,8 +223,7 @@ levmulttest <- function(data, lmt, model)
 llratiotest <- function(model0 , model1){
   
   ll0 <- model0$values[length(model0$values)]
-  
   ll1 <- model1$values[length(model1$values)]
   
-  return(-2 * (ll0 - ll1))
+  return(2 * (ll0 - ll1))
 }
