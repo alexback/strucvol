@@ -7,14 +7,14 @@
 simdevent(
   N = 1000,
   len = 500,
-  pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9),
+  pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
   Ain = 80,
   Ein = 60,
   K = 60,
   r = 0.001,
   uv = 5e-04,
   ttv = 5,
-  default = 0.8,
+  thd = 0.8,
   plot = T
 )
 }
@@ -23,7 +23,9 @@ simdevent(
 
 \item{len}{Integer, the length of the simulated time period.}
 
-\item{pars}{A vector with the parameter values of the structural multivariate stochastic volatility model.}
+\item{pars}{A vector with the parameter values of the structural multivariate stochastic volatility model.
+Should be in the order: c(mu_1, beta_1, sigma_1, mu_2, beta_2, sigma_2, rho, phi),
+where subscript 1 corresponds to the "structural" series that has an explanatory variable in the state equation.}
 
 \item{Ain}{Numeric, initial asset value.}
 
@@ -37,12 +39,12 @@ simdevent(
 
 \item{ttv}{Numeric, time to maturity of the debt over the period (measured in years).}
 
-\item{default}{Numeric, specifies a leverage ratio that implies default. Used to draw vertical abline in the histogram.}
+\item{thd}{Numeric, specifies a threshold leverage ratio that the user wants to monitor. Used to draw a vertical abline in the histogram.}
 
 \item{plot}{Boolean, should a plot be created (T) or not (F)?}
 }
 \value{
-Plots the histogram with a vertical abline for the default and returns the simulated minimum leverage ratios.
+Plots the histogram with a vertical abline for a user-specified threshold and returns the simulated minimum leverage ratios.
 }
 \description{
 Simulate the minimum leverage ratio during some period given inputs.

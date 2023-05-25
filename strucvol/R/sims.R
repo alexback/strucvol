@@ -12,7 +12,7 @@
 #'@return A list containing relevant simulated quantities.
 #'@export
 
-simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9),
+simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
                            Ain = 100, Ein = 80, K = 20, r = 0.001, uv = 0.0005, ttv = 5)
   {
    
@@ -25,6 +25,7 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
     sigma2 <- pars[6]
   
     rho <- pars[7]
+    phi <- pars[8]
 
     len <- as.integer(len)
     
@@ -75,7 +76,7 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
     
     for (j in 2:len){
     lm[j -1] <- pnorm(d1[j - 1]) * A[j - 1] / E[j - 1]
-    re[j] <- lm[j - 1] * ra[j]
+    re[j] <- (lm[j - 1]^phi) * ra[j]
     
     E[j] <- E[j - 1] * exp(re[j])
     }
@@ -92,19 +93,21 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
 #'@param N Integer, the number of time series to use for the simulation. 
 #'@param len Integer, the length of the simulated time period.
 #'@param pars A vector with the parameter values of the structural multivariate stochastic volatility model.
+#' Should be in the order: c(mu_1, beta_1, sigma_1, mu_2, beta_2, sigma_2, rho, phi),
+#' where subscript 1 corresponds to the "structural" series that has an explanatory variable in the state equation.
 #'@param Ain Numeric, initial asset value.
 #'@param Ein Numeric, initial equity value.
 #'@param K Numeric, debt value over the time period.
 #'@param r Numeric, the risk-free rate of interest
 #'@param uv Numeric, the daily unconditional variance of the assets over the period.
 #'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
-#'@param default Numeric, specifies a leverage ratio that implies default. Used to draw vertical abline in the histogram.
+#'@param thd Numeric, specifies a threshold leverage ratio that the user wants to monitor. Used to draw a vertical abline in the histogram.
 #'@param plot Boolean, should a plot be created (T) or not (F)?
-#'@return Plots the histogram with a vertical abline for the default and returns the simulated minimum leverage ratios.  
+#'@return Plots the histogram with a vertical abline for a user-specified threshold and returns the simulated minimum leverage ratios.  
 #'@export
 
-simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9),
-                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, default = 0.8, plot = T){
+simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
+                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, thd = 0.8, plot = T){
   
   
   
@@ -114,9 +117,10 @@ simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.
   if (plot == T){
   hist(sims, main = "Distribution of the minimum leverage ratio during the period", xlab = "Leverage ratio", col = 5,
        density = 20,
-       angle = 20) 
-  abline(v = default, col ="red")
-  legend("topleft", legend = "Default", pch = "|", col = "red")
+       angle = 20)
+    
+  abline(v = thd, col ="red")
+  legend("topleft", legend = "Threshold", pch = "|", col = "red")
   }
   
   

@@ -10,16 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _strucvol_rcpp_hello_world() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
-    return rcpp_result_gen;
-END_RCPP
-}
 // lcrec
 NumericVector lcrec(NumericVector y, NumericVector logsigma2, double alpha0, double alpha1, double beta1);
 RcppExport SEXP _strucvol_lcrec(SEXP ySEXP, SEXP logsigma2SEXP, SEXP alpha0SEXP, SEXP alpha1SEXP, SEXP beta1SEXP) {
@@ -80,7 +70,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_strucvol_rcpp_hello_world", (DL_FUNC) &_strucvol_rcpp_hello_world, 0},
     {"_strucvol_lcrec", (DL_FUNC) &_strucvol_lcrec, 5},
     {"_strucvol_derivreclm", (DL_FUNC) &_strucvol_derivreclm, 4},
     {"_strucvol_derivreclev", (DL_FUNC) &_strucvol_derivreclev, 3},
