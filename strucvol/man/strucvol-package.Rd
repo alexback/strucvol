@@ -29,7 +29,7 @@ Maintainer: Alexander Back
   
   Sandmann, Gleb and Koopman, Siem Jan, (1998). Estimation of stochastic volatility models via Monte Carlo maximum likelihood. Journal of Econometrics, 87, issue 2, p. 271-301. https://EconPapers.repec.org/RePEc:eee:econom:v:87:y:1998:i:2:p:271-301.
   
-  Wooldridge, Jeffrey M. (1990). A Unified Approach to Robust, Regression-Based Specification Tests. Econometric Theory, 6, issue 1, p. 17–43. http://www.jstor.org/stable/3532053
+  Wooldridge, Jeffrey M. (1990). A Unified Approach to Robust, Regression-Based Specification Tests. Econometric Theory, 6, issue 1, p. 17–43. http://www.jstor.org/stable/3532053.
 }
 \keyword{Stochastic volatility, Monte Carlo likelihood, state space models, misspecification testing}
 \seealso{
