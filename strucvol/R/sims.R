@@ -12,8 +12,9 @@
 #'@return A list containing relevant simulated quantities.
 #'@export
 
-simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
-                           Ain = 100, Ein = 80, K = 20, r = 0.001, uv = 0.0005, ttv = 5)
+simstrucsystem <- function(len = 30, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.6, 1),
+                           Ain = 100, Ein = 80, K = 20, r = 0.001, uv = 0.0005, ttv = 5,
+                           crisis_sim = F, crisisret = -0.1)
   {
    
     mu1 <- pars[1]
@@ -67,7 +68,7 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
     d1 <- (log(AK) + (r + 0.5 * sqrt(uv * 252)^2 ) * ttv) / (sqrt(uv * 252 * ttv))
     
     
-    E <- rep(0,len)
+    E <- rep(0, len)
     E[1] <- Ein
     lm <- rep(0, len-1)
     
@@ -82,9 +83,21 @@ simstrucsystem <- function(len = 2000, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0
     }
     
     EK = E / K
-    return(list(retseries = cbind(ra, re, rm), h = cbind(h_1, h_2), lm = lm, E = E, A = A, EK = EK, AK = AK))
     
-  
+    levrat <- E / (E + K)
+   
+      
+    cind <- ifelse(sum(rm) < crisisret, T, F)
+        
+    if (crisis_sim == T){
+      
+      return(ifelse(cind, EK[length(EK)], 999))
+    }
+    
+    else{
+    return(list(retseries = cbind(ra, re, rm), h = cbind(h_1, h_2),
+                lm = lm, E = E, A = A, EK = EK, levrat = levrat, AK = AK, crisis = cind))
+    }
 }
 
 #'@title simdevent
@@ -111,11 +124,16 @@ simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.
   
   
   
-  sims <- replicate(n = N,
-                    min(simstrucsystem(len = len, pars = pars, Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv)$EK))
+  sims <- replicate(n = N, simstrucsystem(len = len, pars = pars,
+                                          Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv,
+                                          crisis_sim = T))
 
+
+    
+    sims <- sims[sims!=999]
+  
   if (plot == T){
-  hist(sims, main = "Distribution of the minimum leverage ratio during the period", xlab = "Leverage ratio", col = 5,
+  hist(sims, main = "Distribution of the terminal crisis leverage ratio.", xlab = "Leverage ratio", col = 5,
        density = 20,
        angle = 20)
     
@@ -127,5 +145,35 @@ simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.
  return(sims)
   
 } 
+
+
+#'@title simintprob
+#'@description Simulate the probability that leverage ratio lies in some range at the end of the period.
+#'@importFrom MASS mvrnorm 
+#'@param len Integer, the length of the simulated time period.
+#'@param pars A vector with the parameter values of the structural multivariate stochastic volatility model.
+#'@param Ain Numeric, initial asset value.
+#'@param Ein Numeric, initial equity value.
+#'@param K Numeric, debt value over the time period.
+#'@param r Numeric, the risk-free rate of interest
+#'@param uv Numeric, the daily unconditional variance of the assets over the period.
+#'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
+#'@return The probability that the leverage ratio lies in the specified range at the end of the period.
+#'@export
+
+
+simintprob <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
+                       Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, lower = 0.4, upper = 0.6, seed = 123){
+  
+  set.seed(seed)  
+  termlrs <- replicate(N, simstrucsystem(len = len, pars = pars,
+                        Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv,
+                        crisis_sim = F)$levrat[len])
+  set.seed(NULL)
+  
+  prob <- sum(termlrs >= lower & termlrs <= upper) / N
+  
+  return(prob)
+}
 
 
