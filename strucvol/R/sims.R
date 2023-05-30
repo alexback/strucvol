@@ -9,6 +9,8 @@
 #'@param r Numeric, the risk-free rate of interest
 #'@param uv Numeric, the daily unconditional variance of the assets over the period.
 #'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
+#'@param crisis_sim Boolean, should the function return the leverage ratio conditional on a crisis?
+#'@param crisisret Numeric, return that defines the upper limit of a crisis  during the period.
 #'@return A list containing relevant simulated quantities.
 #'@export
 
@@ -84,14 +86,14 @@ simstrucsystem <- function(len = 30, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.6
     
     EK = E / K
     
-    levrat <- E / (E + K)
+    levrat <- 1 - (E / (E + K))
    
       
     cind <- ifelse(sum(rm) < crisisret, T, F)
         
     if (crisis_sim == T){
       
-      return(ifelse(cind, EK[length(EK)], 999))
+      return(ifelse(cind, levrat[len], 999))
     }
     
     else{
@@ -116,22 +118,31 @@ simstrucsystem <- function(len = 30, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.6
 #'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
 #'@param thd Numeric, specifies a threshold leverage ratio that the user wants to monitor. Used to draw a vertical abline in the histogram.
 #'@param plot Boolean, should a plot be created (T) or not (F)?
+#'@param trim Boolean, should the simulated terminal leverage ratios be trimmed? 
+#'@param trimquants Vector indicating the quantiles to trim at if argument "trim" is set to TRUE. 
 #'@return Plots the histogram with a vertical abline for a user-specified threshold and returns the simulated minimum leverage ratios.  
 #'@export
 
 simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
-                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, thd = 0.8, plot = T){
+                      Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, thd = 0.8, plot = T, trim = T, 
+                      trimquants = c(0.01, 0.99), crisisret = -0.1, seed = NULL){
   
   
+  set.seed(seed)
   
   sims <- replicate(n = N, simstrucsystem(len = len, pars = pars,
                                           Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv,
-                                          crisis_sim = T))
-
-
-    
-    sims <- sims[sims!=999]
+                                          crisis_sim = T, crisisret = crisisret))
+  set.seed(NULL)
   
+    sims <- sims[sims!=999]
+    
+    if (trim == T) {
+
+      sims <-  sims[(sims > quantile(sims, trimquants[1])) & (sims < quantile(sims, trimquants[2]))]
+    }
+    
+    
   if (plot == T){
   hist(sims, main = "Distribution of the terminal crisis leverage ratio.", xlab = "Leverage ratio", col = 5,
        density = 20,
@@ -158,22 +169,42 @@ simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.
 #'@param r Numeric, the risk-free rate of interest
 #'@param uv Numeric, the daily unconditional variance of the assets over the period.
 #'@param ttv Numeric, time to maturity of the debt over the period (measured in years).
+#'@param crisis Boolean, only keeps paths where the market return is below some threshold during the period.
+#'@param crisisret The return that defines a crisis and sets Boolean crisis to TRUE. 
 #'@return The probability that the leverage ratio lies in the specified range at the end of the period.
 #'@export
 
-
 simintprob <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.2, 0.9, 1),
-                       Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, lower = 0.4, upper = 0.6, seed = 123){
+                       Ain = 80, Ein = 60, K = 60, r = 0.001, uv = 0.0005, ttv = 5, lower = 0.4, upper = 0.6, seed = NULL,
+                       crisis = F, crisisret = -0.1){
   
-  set.seed(seed)  
+  set.seed(seed) 
+  if(crisis == F){
+  
   termlrs <- replicate(N, simstrucsystem(len = len, pars = pars,
                         Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv,
                         crisis_sim = F)$levrat[len])
+  
+  print(head(termlrs))
+  }
+  
+  else{
+    
+    termlrs <- replicate(N, simstrucsystem(len = len, pars = pars,
+                                           Ain = Ain, Ein = Ein, K = K, r = r, uv = uv, ttv = ttv,
+                                           crisis_sim = T, crisisret = crisisret))
+    
+    print(head(termlrs))
+    termlrs <- termlrs[termlrs!=999]
+    
+    N <- length(termlrs)
+  }
+  
   set.seed(NULL)
   
   prob <- sum(termlrs >= lower & termlrs <= upper) / N
   
-  return(prob)
+  return(list(prob = prob, termlrs = termlrs))
 }
 
 

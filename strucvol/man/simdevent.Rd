@@ -15,7 +15,11 @@ simdevent(
   uv = 5e-04,
   ttv = 5,
   thd = 0.8,
-  plot = T
+  plot = T,
+  trim = T,
+  trimquants = c(0.01, 0.99),
+  crisisret = -0.1,
+  seed = NULL
 )
 }
 \arguments{
@@ -42,6 +46,10 @@ where subscript 1 corresponds to the "structural" series that has an explanatory
 \item{thd}{Numeric, specifies a threshold leverage ratio that the user wants to monitor. Used to draw a vertical abline in the histogram.}
 
 \item{plot}{Boolean, should a plot be created (T) or not (F)?}
+
+\item{trim}{Boolean, should the simulated terminal leverage ratios be trimmed?}
+
+\item{trimquants}{Vector indicating the quantiles to trim at if argument "trim" is set to TRUE.}
 }
 \value{
 Plots the histogram with a vertical abline for a user-specified threshold and returns the simulated minimum leverage ratios.

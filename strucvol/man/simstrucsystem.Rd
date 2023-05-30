@@ -33,6 +33,10 @@ simstrucsystem(
 \item{uv}{Numeric, the daily unconditional variance of the assets over the period.}
 
 \item{ttv}{Numeric, time to maturity of the debt over the period (measured in years).}
+
+\item{crisis_sim}{Boolean, should the function return the leverage ratio conditional on a crisis?}
+
+\item{crisisret}{Numeric, return that defines the upper limit of a crisis  during the period.}
 }
 \value{
 A list containing relevant simulated quantities.

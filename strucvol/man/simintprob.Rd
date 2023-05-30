@@ -16,7 +16,9 @@ simintprob(
   ttv = 5,
   lower = 0.4,
   upper = 0.6,
-  seed = 123
+  seed = NULL,
+  crisis = F,
+  crisisret = -0.1
 )
 }
 \arguments{
@@ -35,6 +37,10 @@ simintprob(
 \item{uv}{Numeric, the daily unconditional variance of the assets over the period.}
 
 \item{ttv}{Numeric, time to maturity of the debt over the period (measured in years).}
+
+\item{crisis}{Boolean, only keeps paths where the market return is below some threshold during the period.}
+
+\item{crisisret}{The return that defines a crisis and sets Boolean crisis to TRUE.}
 }
 \value{
 The probability that the leverage ratio lies in the specified range at the end of the period.
