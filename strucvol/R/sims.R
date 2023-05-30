@@ -144,7 +144,7 @@ simdevent <- function(N = 1000, len = 500, pars = c(-10, 0.95, 0.3, -12, 0.9, 0.
     
     
   if (plot == T){
-  hist(sims, main = "Distribution of the terminal crisis leverage ratio.", xlab = "Leverage ratio", col = 5,
+  hist(sims, main = "", xlab = "Leverage ratio", col = 5,
        density = 20,
        angle = 20)
     
