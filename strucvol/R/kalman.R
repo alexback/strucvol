@@ -334,3 +334,111 @@ ssvdsim <- function(vt, Ft, Kt, Tt, Qt, Zt, Ht, a0, P0, yt){
 }
 
 ################################################################################
+
+######################## Asymmetric model without covariates ###################
+
+########################## The Kalman filter ###################################
+
+asysvkf <- function(Tt, Qt, Zt, Ht, Gt, ct, a0, P0, yt){
+  l <- length(yt)
+  
+  vt <- numeric(l)
+  Kt <- array(dim = c(2,1,l))
+  at <- array(dim = c(2,1,l + 1))
+  at[,,1] <- a0
+  Ft <- numeric(l)
+  Lt <- array(dim = c(2,2,l))
+  Pt <- array(dim = c(2,2,l + 1))
+  Pt[,,1] <- P0
+  
+  
+  
+  for (i in 1:l){
+    
+    
+    Gti <- matrix(Gt[,,i])
+    Qti <- Qt
+    
+    Zti <- t(matrix(Zt[,,i]))
+    
+    cti <- matrix(ct[,,i])
+    
+    Pti <- matrix(Pt[,,i], nrow = 2, ncol = 2)
+    
+    vt[i] <- yt[i] - Zti%*%at[,,i]
+    
+    Ft[i] <- Zti%*%Pti%*%t(Zti) + Ht[i]
+    
+    Kti <- (Tt%*%Pti%*%t(Zti) + Gti) / Ft[i]
+    
+    Kt[,,i] <- Kti
+    
+    Lti <- Tt - Kti%*%Zti
+    
+    Lt[,,i] <- Lti
+    
+    at[,,i + 1] <- Tt%*%at[,,i] + cti + Kti%*%vt[i]
+    
+    Pt[,,i + 1] <- Tt%*%Pti%*%t(Lti) + Qti - Gti%*%t(Kti)
+    
+  }
+  
+  return(list(vt = vt, Kt = Kt, at = at[,,1:l], Ft = Ft, Lt = Lt, 
+              Pt = Pt[,,1:l]))  
+}
+
+################################################################################
+
+######################### Asymmetric model with covariates #####################
+
+########################## The Kalman filter ###################################
+
+asysvkfx <- function(Tt, Qt, Zt, Ht, Gt, ct, a0, P0, yt){
+  l <- length(yt)
+  
+  vt <- numeric(l)
+  Kt <- array(dim = c(3,1,l))
+  at <- array(dim = c(3,1,l + 1))
+  at[,,1] <- a0
+  Ft <- numeric(l)
+  Lt <- array(dim = c(3,3,l))
+  Pt <- array(dim = c(3,3,l + 1))
+  Pt[,,1] <- P0
+  
+  
+  
+  for (i in 1:l){
+    
+    
+    Gti <- matrix(Gt[,,i])
+    Qti <- Qt
+    
+    Zti <- t(matrix(Zt[,,i]))
+    
+    cti <- matrix(ct[,,i])
+    
+    Pti <- matrix(Pt[,,i], nrow = 3, ncol = 3)
+    
+    vt[i] <- yt[i] - Zti%*%at[,,i]
+    
+    Ft[i] <- Zti%*%Pti%*%t(Zti) + Ht[i]
+    
+    Kti <- (Tt%*%Pti%*%t(Zti) + Gti) / Ft[i]
+    
+    Kt[,,i] <- Kti
+    
+    Lti <- Tt - Kti%*%Zti
+    
+    Lt[,,i] <- Lti
+    
+    at[,,i + 1] <- Tt%*%at[,,i] + cti + Kti%*%vt[i]
+    
+    Pt[,,i + 1] <- Tt%*%Pti%*%t(Lti) + Qti - Gti%*%t(Kti)
+    
+  }
+  
+  return(list(vt = vt, Kt = Kt, at = at[,,1:l], Ft = Ft, Lt = Lt, 
+              Pt = Pt[,,1:l]))  
+}
+
+################################################################################

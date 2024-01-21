@@ -25,6 +25,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// asylcrec
+NumericVector asylcrec(NumericVector y, NumericVector logsigma2, NumericVector ind, double alpha0, double alpha1, double alpha2, double beta1);
+RcppExport SEXP _strucvol_asylcrec(SEXP ySEXP, SEXP logsigma2SEXP, SEXP indSEXP, SEXP alpha0SEXP, SEXP alpha1SEXP, SEXP alpha2SEXP, SEXP beta1SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type logsigma2(logsigma2SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ind(indSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha0(alpha0SEXP);
+    Rcpp::traits::input_parameter< double >::type alpha1(alpha1SEXP);
+    Rcpp::traits::input_parameter< double >::type alpha2(alpha2SEXP);
+    Rcpp::traits::input_parameter< double >::type beta1(beta1SEXP);
+    rcpp_result_gen = Rcpp::wrap(asylcrec(y, logsigma2, ind, alpha0, alpha1, alpha2, beta1));
+    return rcpp_result_gen;
+END_RCPP
+}
 // derivreclm
 DataFrame derivreclm(NumericVector leta2, NumericVector logsigma2, NumericVector beta1, NumericVector lm2);
 RcppExport SEXP _strucvol_derivreclm(SEXP leta2SEXP, SEXP logsigma2SEXP, SEXP beta1SEXP, SEXP lm2SEXP) {
@@ -71,6 +88,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_strucvol_lcrec", (DL_FUNC) &_strucvol_lcrec, 5},
+    {"_strucvol_asylcrec", (DL_FUNC) &_strucvol_asylcrec, 7},
     {"_strucvol_derivreclm", (DL_FUNC) &_strucvol_derivreclm, 4},
     {"_strucvol_derivreclev", (DL_FUNC) &_strucvol_derivreclev, 3},
     {"_strucvol_cstoch", (DL_FUNC) &_strucvol_cstoch, 6},

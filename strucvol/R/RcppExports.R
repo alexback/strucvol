@@ -5,6 +5,10 @@ lcrec <- function(y, logsigma2, alpha0, alpha1, beta1) {
     .Call(`_strucvol_lcrec`, y, logsigma2, alpha0, alpha1, beta1)
 }
 
+asylcrec <- function(y, logsigma2, ind, alpha0, alpha1, alpha2, beta1) {
+    .Call(`_strucvol_asylcrec`, y, logsigma2, ind, alpha0, alpha1, alpha2, beta1)
+}
+
 derivreclm <- function(leta2, logsigma2, beta1, lm2) {
     .Call(`_strucvol_derivreclm`, leta2, logsigma2, beta1, lm2)
 }

@@ -1,7 +1,7 @@
 [
     {
         "file": "C:/Users/Omistaja/Documents/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/src/strucvol_rcpp.cpp",
-        "file_last_write": 1684998890.0,
+        "file_last_write": 1701000272.0,
         "definitions": [
             {
                 "usr": "c:@F@lcrec#I#I#d#d#d#",
@@ -14,12 +14,22 @@
                 "hidden": false
             },
             {
+                "usr": "c:@F@asylcrec#I#I#I#d#d#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "asylcrec(Rcpp::NumericVector, Rcpp::NumericVector, Rcpp::NumericVector, double, double, double, double)",
+                "file": "C:/Users/Omistaja/Documents/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/src/strucvol_rcpp.cpp",
+                "line": 23,
+                "column": 15,
+                "hidden": false
+            },
+            {
                 "usr": "c:@F@derivreclm#I#I#I#I#",
                 "kind": 6,
                 "parent_name": "",
                 "name": "derivreclm(Rcpp::NumericVector, Rcpp::NumericVector, Rcpp::NumericVector, Rcpp::NumericVector)",
                 "file": "C:/Users/Omistaja/Documents/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/src/strucvol_rcpp.cpp",
-                "line": 22,
+                "line": 41,
                 "column": 11,
                 "hidden": false
             },
@@ -29,7 +39,7 @@
                 "parent_name": "",
                 "name": "derivreclev(Rcpp::NumericVector, Rcpp::NumericVector, Rcpp::NumericVector)",
                 "file": "C:/Users/Omistaja/Documents/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/src/strucvol_rcpp.cpp",
-                "line": 58,
+                "line": 77,
                 "column": 11,
                 "hidden": false
             },
@@ -39,7 +49,7 @@
                 "parent_name": "",
                 "name": "cstoch(Rcpp::NumericVector, Rcpp::NumericVector, double, double, double, double)",
                 "file": "C:/Users/Omistaja/Documents/School/Doktorand/Skrivet/Structural stochastic volatility/R/MCL Github/strucvol/src/strucvol_rcpp.cpp",
-                "line": 92,
+                "line": 111,
                 "column": 15,
                 "hidden": false
             }

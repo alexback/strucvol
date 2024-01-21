@@ -18,6 +18,25 @@ NumericVector lcrec(NumericVector y,
   return logsigma2;
   
 }
+
+// [[Rcpp::export]]
+NumericVector asylcrec(NumericVector y,
+                    NumericVector logsigma2,
+                    NumericVector ind,
+                    double alpha0,
+                    double alpha1,
+                    double alpha2,
+                    double beta1) {
+  NumericVector y2 = Rcpp::pow(y,2);
+  int n = y2.size();
+  for(int i = 1; i < n ; ++i) {
+    
+    logsigma2[i] = alpha0 + alpha1 * log(y2[i - 1]) + beta1 * logsigma2[i - 1] + alpha2 * ind[i - 1];
+  }
+  return logsigma2;
+  
+}
+
 // [[Rcpp::export]]  
 DataFrame derivreclm(NumericVector leta2,
                                     NumericVector logsigma2,

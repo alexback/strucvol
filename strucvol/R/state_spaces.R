@@ -1,5 +1,32 @@
-# Standard ARSV model state space maker.
+# Standard ARSV model state space maker. 1: MCL, 2: testing.
 spmaker <- function(param, yt, Ht){
+  
+  ya <- log(yt^2)
+  l <- length(ya)
+  
+  Tt <- diag(2) * c(param[1], 1) # OK
+  
+  Qt <- diag(2) * c(param[2]^2, 0)
+  
+  Zt <- array(dim = c(1,2,l))
+  Zt[1,1,] <- 1
+  Zt[1,2,] <- 1
+  
+  a0 <- c(0, 0)
+  a <- array(dim = c(2,1,l))
+  a[,,1] <- a0
+  
+  
+  p <- array(dim = c(2,2,l))
+  P0 <- matrix(diag(c(param[2]^2 / (1 - param[1]^2),100000)), nrow = 2, ncol = 2)
+  
+  
+  
+  return(list(Tt = Tt, Qt = Qt, Zt = Zt, a0 = a0, P0 = P0, yt = ya))
+}
+
+
+spmaker2 <- function(param, yt, Ht){
   
   ya <- log(yt^2) + 1.27
   l <- length(ya)
@@ -18,7 +45,7 @@ spmaker <- function(param, yt, Ht){
   
   
   p <- array(dim = c(2,2,l))
-  P0 <- matrix(diag(c(param[2]^2 / (1 - param [1]^2),100000)), nrow = 2, ncol = 2)
+  P0 <- matrix(diag(c(param[2]^2 / (1 - param[1]^2),100000)), nrow = 2, ncol = 2)
   
   
   
@@ -28,7 +55,7 @@ spmaker <- function(param, yt, Ht){
 # Structural stochastic volatility state space maker.
 sspmaker <- function(param, yt, Ht, xt){
   
-  ya <- log(yt^2) + 1.27
+  ya <- log(yt^2)
   l <- length(ya)
   
   Tt <- diag(3) * c(param[1], 1, 1) # OK
@@ -115,3 +142,87 @@ msspmaker <- function(param, yt, xt){
   
   return(list(Tt = Tt, Qt = Qt, Zt = Zt, Ht = Ht, a0 = a0, P0 = P0, yt = ya, ind = ind))
 }
+
+#################### Asymmetric model state space maker ########################
+
+asyspmaker <- function(param, yt){
+  
+  l <- length(yt)
+  Tt <- diag(2) * c(param[1], 1) # OK
+  A <- 0.7979 * param[3] * param[2]
+  B <- 1.1061 * param[3] * param[2]
+  
+  st <- sign(yt)
+  
+  Qt <- diag(2) * c(param[2]^2 - A^2, 0)
+  
+  Zt <- array(dim = c(1,2,l))
+  Zt[1,1,] <- 1
+  Zt[1,2,] <- 1
+  
+  
+  Gt <- array(dim = c(2,1,l))
+  Gt[1,1,] <- B * st
+  Gt[2,1,] <- 0
+  
+  
+  ct <- array(dim = c(2,1,l))
+  ct[1,1,] <- A * st
+  ct[2,1,] <- 0
+  
+  
+  a0 <- c(0, 0)
+  a <- array(dim = c(2,1,l))
+  a[,,1] <- a0
+  
+  Ht <- rep(pi^2/2, l)
+  
+  P0 <- matrix(diag(c(param[2]^2 / (1 - param[1]^2), 10000000)),
+               nrow = 2, ncol = 2)
+  yt <- log(yt^2) + 1.27
+  return(list(Tt = Tt, Qt = Qt, Zt = Zt, Gt = Gt, Ht = Ht, ct = ct, yt = yt, a0 = a0,P0 = P0))
+}
+
+################################################################################
+
+############ Asymmetric model with covariates state space maker ################
+
+asyspmakerx <- function(param, yt, x){
+  
+  l <- length(yt)
+  Tt <- diag(3) * c(param[1], 1, 1) # OK
+  A <- 0.7979 * param[3] * param[2]
+  B <- 1.1061 * param[3] * param[2]
+  
+  st <- sign(yt)
+  
+  Qt <- diag(3) * c(param[2]^2 - A^2, 0, 0)
+  
+  Zt <- array(dim = c(1,3,l))
+  Zt[1,1,] <- 1
+  Zt[1,2,] <- 1
+  Zt[1,3,] <- x
+  
+  Gt <- array(dim = c(3,1,l))
+  Gt[1,1,] <- B * st
+  Gt[2,1,] <- 0
+  Gt[3,1,] <- 0
+  
+  ct <- array(dim = c(3,1,l))
+  ct[1,1,] <- A * st
+  ct[2,1,] <- 0
+  ct[3,1,] <- 0
+  
+  a0 <- c(0, 0, 0)
+  a <- array(dim = c(3,1,l))
+  a[,,1] <- a0
+  
+  Ht <- rep(pi^2/2, l)
+  
+  P0 <- matrix(diag(c(param[2]^2 / (1 - param[1]^2), 10000000, 10000000)),
+               nrow = 3, ncol = 3)
+  yt <- log(yt^2) + 1.27
+  return(list(Tt = Tt, Qt = Qt, Zt = Zt, Gt = Gt, Ht = Ht, ct = ct, yt = yt, a0 = a0,P0 = P0))
+}
+
+################################################################################
